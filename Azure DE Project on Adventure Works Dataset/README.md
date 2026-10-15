@@ -1,41 +1,31 @@
 # Azure Data Engineering Pipeline (Adventure Works Dataset)
  
-A cloud-native ETL pipeline built on Azure that simulates an enterprise data engineering workflow. It pulls raw data from GitHub, processes it through a bronze-silver-gold medallion architecture, loads it into a star schema in Azure Synapse Analytics, and serves it to Power BI dashboards.
+A cloud-native ETL pipeline built on Azure that simulates an enterprise data engineering workflow. It pulls raw data from GitHub, processes it through a bronze-silver-gold medallion architecture, models it as a star schema in Azure Synapse Analytics, and serves it to Power BI dashboards.
  
 ## Overview
  
 The goal of this project was to practice the full data engineering lifecycle on Azure: ingestion, transformation, warehousing, and reporting. The Adventure Works dataset (multi-table sales and customer data) is ingested automatically through an API, cleaned and joined with PySpark, modeled for analytics, and visualized in Power BI.
  
-## Architecture
+## Architecture and Pipeline Steps
  
-```mermaid
-flowchart LR
-    A[GitHub<br/>Adventure Works data] -->|ADF pipelines<br/>API ingestion| B[(ADLS Gen2<br/>Bronze: raw)]
-    B -->|Databricks<br/>PySpark| C[(ADLS Gen2<br/>Silver: cleansed and joined)]
-    C -->|Databricks<br/>PySpark| D[(ADLS Gen2<br/>Gold: analytics-ready)]
-    D -->|Load| E[Azure Synapse Analytics<br/>SQL Pools, star schema]
-    E -->|External and<br/>openrowset tables| F[Power BI<br/>Dashboards]
+```
+GitHub (HTTP) -> Data Factory -> ADLS Gen2 Bronze -> Databricks (PySpark) -> ADLS Gen2 Silver -> Synapse (Gold) -> Power BI
 ```
  
-## Pipeline Steps
- 
-1. **Ingestion (Azure Data Factory)**
-   - ADF pipelines pull the source data from GitHub endpoints through an API connection
-   - Data lands in Azure Data Lake Storage Gen2 and the ingestion is fully automated
-2. **Medallion architecture (ADLS Gen2)**
-   - **Bronze:** raw data exactly as received
-   - **Silver:** cleansed and joined data
-   - **Gold:** curated, analytics-ready data
-   - Keeping the three layers separate keeps raw, transformed, and reporting data apart
-3. **Transformation (Databricks and PySpark)**
-   - Cleansed the data and joined multiple sales and customer tables
-   - Prepared the curated datasets and loaded them into Azure Synapse Analytics (SQL Pools)
-4. **Data modeling and warehousing (Azure Synapse Analytics)**
+1. **Data source and ingestion (Azure Data Factory)**
+   - ADF pipelines pull the Adventure Works data from GitHub over HTTP
+   - Ingestion is fully automated and lands the files in Azure Data Lake Storage Gen2
+2. **Bronze: raw data store (ADLS Gen2)**
+   - Raw data is stored exactly as received, so the original source data is always available
+3. **Silver: transformation (Databricks and PySpark)**
+   - Databricks reads the raw data, cleanses it, and joins the multi-table sales and customer datasets
+   - The transformed data is written back to ADLS Gen2 as the silver layer
+4. **Gold: serving (Azure Synapse Analytics)**
+   - Curated, analytics-ready data is loaded into Azure Synapse Analytics (SQL Pools)
    - Designed a star schema to speed up queries and reporting
-   - Created external tables and `OPENROWSET` queries over the data lake
-   - Connected Synapse to Power BI for end-user analytics
+   - Created external tables and `OPENROWSET` queries for flexible access to the data
 5. **Reporting (Power BI)**
-   - Built dashboards that track sales KPIs and operational trends
+   - Connected Synapse to Power BI and built dashboards that track sales KPIs and operational trends
 ## Tech Stack
  
 | Area | Tools |
