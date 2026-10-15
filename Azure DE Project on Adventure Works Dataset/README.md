@@ -4,7 +4,7 @@ A cloud-native ETL pipeline built on Azure that simulates an enterprise data eng
  
 ## Overview
  
-The goal of this project was to practice the full data engineering lifecycle on Azure: ingestion, transformation, warehousing, and reporting. The Adventure Works dataset (multi-table sales and customer data) is ingested automatically through an API, cleaned and joined with PySpark, modeled for analytics, and visualized in Power BI.
+The goal of this project was to practice the full data engineering lifecycle on Azure: ingestion, transformation, warehousing, and reporting. The [Adventure Works dataset](https://www.kaggle.com/datasets/ukveteran/adventure-works) (multi-table sales and customer data, available on Kaggle) is ingested automatically through an API, cleaned and joined with PySpark, modeled for analytics, and visualized in Power BI.
  
 ## Architecture and Pipeline Steps
  
