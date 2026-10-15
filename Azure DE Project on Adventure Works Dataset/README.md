@@ -45,5 +45,5 @@ GitHub (HTTP) -> Data Factory -> ADLS Gen2 Bronze -> Databricks (PySpark) -> ADL
 - Designing a star schema for reporting workloads
 - Connecting a data warehouse to a BI tool for end users
 
-## Acknowledgment 🎉
+## Acknowledgment
 This project draws inspiration from an insightful guide by Ansh Lamba. For a detailed video walkthrough, check out his YouTube channel. Special thanks to Ansh for sharing such valuable resources and guidance for Data Professionals. 
